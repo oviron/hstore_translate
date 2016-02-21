@@ -6,8 +6,14 @@ DatabaseCleaner.strategy = :transaction
 
 MiniTest::Test = MiniTest::Unit::TestCase unless MiniTest.const_defined?(:Test) # Rails 4.0.x
 
+I18n.available_locales = [:en, :es, :fr]
+
 class Post < ActiveRecord::Base
   translates :title
+end
+
+class Author < ActiveRecord::Base
+  translates :bio, :locales => [:en, :es]
 end
 
 class HstoreTranslate::Test < Minitest::Test
@@ -56,13 +62,16 @@ class HstoreTranslate::Test < Minitest::Test
       connection.create_table(:posts, :force => true) do |t|
         t.column :title_translations, 'hstore'
       end
+      connection.create_table(:authors, :force => true) do |t|
+        t.column :bio_translations, 'hstore'
+      end
     end
   end
 
   prepare_database
 
   def setup
-    I18n.available_locales = ['en', 'en-US', 'fr']
+    I18n.available_locales = ['en', 'en-US', 'es', 'fr']
     I18n.config.enforce_available_locales = true
     DatabaseCleaner.start
   end
