@@ -1,16 +1,29 @@
+sudo: false
 rvm:
   - 1.9.3
-  - 2.0.0
-  - rbx
+  - 2.1.8
+  - 2.2.4
+  - 2.3.0
   - jruby-19mode
 gemfile:
   - test/gemfiles/Gemfile.rails-3.1.x
   - test/gemfiles/Gemfile.rails-3.2.x
   - test/gemfiles/Gemfile.rails-4.0.x
   - test/gemfiles/Gemfile.rails-4.1.x
+  - test/gemfiles/Gemfile.rails-4.2.x
+  - test/gemfiles/Gemfile.rails-5.0.x
 matrix:
+  allow_failures:
+    - rvm: jruby-19mode
   exclude:
     - rvm: jruby-19mode
       gemfile: test/gemfiles/Gemfile.rails-3.1.x
     - rvm: jruby-19mode
       gemfile: test/gemfiles/Gemfile.rails-3.2.x
+    - rvm: 1.9.3
+      gemfile: test/gemfiles/Gemfile.rails-5.0.x
+    - rvm: 2.1.8
+      gemfile: test/gemfiles/Gemfile.rails-5.0.x
+    - rvm: 2.2.4
+      gemfile: test/gemfiles/Gemfile.rails-5.0.x
+
