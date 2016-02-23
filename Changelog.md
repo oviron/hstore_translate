@@ -1,3 +1,10 @@
+### 1.0.2 2016-02-23
+
+Enhancements:
+
+* Remove respond_to? and method_missing overrides
+* You can provide which locales you want to support
+
 ### 1.0.1 2016-02-23
 
 Enhancements:
