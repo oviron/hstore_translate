@@ -4,6 +4,7 @@ module HstoreTranslate
       include InstanceMethods
 
       options = attrs.last.is_a?(Hash) ? attrs.pop : {}
+      arel_sql_literal = defined?(Arel::SqlLiteral) ? Arel::SqlLiteral : Arel::Nodes::SqlLiteral
 
       class_attribute :translated_attrs
       alias_attribute :translated_attribute_names, :translated_attrs # Improve compatibility with the gem globalize
@@ -23,6 +24,11 @@ module HstoreTranslate
         define_singleton_method "with_#{attr_name}_translation" do |value, locale = I18n.locale|
           quoted_translation_store = connection.quote_column_name("#{attr_name}_translations")
           where("#{quoted_translation_store} @> hstore(:locale, :value)", locale: locale, value: value)
+        end
+
+        define_singleton_method "order_by_#{attr_name}_translation" do |direction = :asc, locale = I18n.locale|
+          literal = arel_sql_literal.new("#{attr_name}_translations -> '#{locale}'")
+          order(literal.send(direction))
         end
 
         (options[:locales] || I18n.available_locales).each do |locale|
