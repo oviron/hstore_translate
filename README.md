@@ -62,6 +62,15 @@ post.title # => This database rocks!
 post.title_he # => אתר זה טוב
 ```
 
+By default as many locales as your I18n.available_locales has defined methods as defined in your model. But 
+you can specify exactly which locales you want to support
+
+```ruby
+class Post < ActiveRecord::Base
+  translates :title, :body, :locales => [:es, :fr]
+end
+```
+
 To find records using translations without constructing hstore queries by hand:
 
 ```ruby

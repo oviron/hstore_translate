@@ -115,14 +115,6 @@ class TranslatesTest < HstoreTranslate::Test
     p.enable_fallback { assert_equal("English Title", p.title_fr) }
   end
 
-  def test_method_missing_delegates
-    assert_raises(NoMethodError) { Post.new.nonexistant_method }
-  end
-
-  def test_method_missing_delegates_non_translated_attributes
-    assert_raises(NoMethodError) { Post.new.other_fr }
-  end
-
   def test_persists_translations_assigned_as_hash
     p = Post.create!(:title_translations => { "en" => "English Title", "fr" => "Titre français" })
     p.reload
@@ -144,5 +136,14 @@ class TranslatesTest < HstoreTranslate::Test
 
   def test_class_method_translates?
     assert_equal true, Post.translates?
+  end
+
+  def test_define_translations_for_passed_locales
+    a = Author.create!(:bio_en => "English Bio", :bio_es => "Bio castellano")
+    a.reload
+    assert_equal({"en" => "English Bio", "es" => "Bio castellano"}, a.bio_translations)
+
+    assert_raises(NoMethodError) { a.bio_fr }
+    assert_raises(NoMethodError) { a.bio_fr = 'Bio français' }
   end
 end
