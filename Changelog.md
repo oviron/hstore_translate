@@ -1,3 +1,9 @@
+### 1.0.3 2016-02-23
+
+Enhancements:
+
+* Add order by translation field
+
 ### 1.0.2 2016-02-23
 
 Enhancements:
